@@ -1,0 +1,422 @@
+/* CYBAEM TECH Design System - Professional B2B - Scoped to Offers Page */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap');
+
+.offers-theme {
+    /* Navy-based professional palette - REFINED from Image */
+    --background: 222 50% 9%;
+    /* Dark navy hero background */
+    --foreground: 0 0% 100%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 30% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 30% 15%;
+
+    /* Deep navy primary */
+    --primary: 222 50% 9%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Light gray secondary */
+    --secondary: 220 15% 96%;
+    --secondary-foreground: 220 30% 15%;
+
+    /* Muted grays */
+    --muted: 220 15% 96%;
+    --muted-foreground: 220 10% 45%;
+
+    /* Subtle accent */
+    --accent: 220 15% 94%;
+    --accent-foreground: 220 30% 15%;
+
+    /* Vibrant CTA color - Deep Blue */
+    --cta: 212 77% 34%;
+    --cta-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 15% 90%;
+    --input: 220 15% 90%;
+    --ring: 21 100% 56%;
+
+    --radius: 0.5rem;
+
+    /* Custom semantic tokens */
+    --section-alt: 0 0% 100%;
+    /* Pure white for section background below hero */
+    --text-subtle: 220 10% 45%;
+    --heading: 222 40% 12%;
+    --price: 222 60% 20%;
+    --divider: 220 15% 88%;
+
+    /* Benefit card number color */
+    --benefit-number: 212 77% 92%;
+
+    /* Base Styles */
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Base style for elements inside the theme */
+.offers-theme main {
+    background-color: hsl(var(--section-alt));
+    color: hsl(var(--card-foreground));
+}
+
+/* Hero Section Specific Styles */
+.offers-theme .hero-section {
+    background-color: hsl(var(--primary));
+    color: white;
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+}
+
+@media (min-width: 768px) {
+    .offers-theme .hero-section {
+        padding-top: 7rem;
+        padding-bottom: 7rem;
+    }
+}
+
+.offers-theme h1,
+.offers-theme .hero-title {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-weight: 700;
+    line-height: 1.1;
+    color: white;
+}
+
+.offers-theme .hero-subtitle {
+    color: hsl(var(--cta));
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+}
+
+.offers-theme .btn-cta {
+    background-color: hsl(var(--cta));
+    color: white;
+    padding: 0.875rem 1.75rem;
+    font-weight: 600;
+    border-radius: 0.375rem;
+    transition: all 0.3s;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+}
+
+.offers-theme .btn-cta:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* Service Card Styles - REFINED */
+.offers-theme .service-card {
+    background: white;
+    border: 1px solid #f3f4f6;
+    /* Very light gray border */
+    padding: 2.5rem 2rem;
+    border-radius: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    transition: all 0.3s ease;
+}
+
+.offers-theme .service-card:hover {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+    border-color: #e5e7eb;
+}
+
+.offers-theme .service-card h3 {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: hsl(var(--heading));
+    margin-bottom: 1rem;
+    line-height: 1.3;
+}
+
+.offers-theme .service-card .price-display {
+    color: hsl(var(--price));
+    font-size: 1.875rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+.offers-theme .service-card .divider {
+    height: 1px;
+    background-color: #f3f4f6;
+    margin: 1.5rem 0;
+    width: 100%;
+}
+
+.offers-theme .service-card .section-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: hsl(var(--heading));
+    margin-bottom: 0.75rem;
+    display: block;
+}
+
+.offers-theme .service-card ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 1.5rem;
+}
+
+.offers-theme .service-card li {
+    font-size: 0.875rem;
+    color: hsl(var(--text-subtle));
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    line-height: 1.4;
+}
+
+.offers-theme .service-card .bullet-circle {
+    width: 0.5rem;
+    height: 0.5rem;
+    background-color: hsl(var(--cta));
+    border-radius: 9999px;
+    margin-top: 0.3rem;
+    flex-shrink: 0;
+}
+
+.offers-theme .service-card .ideal-pill {
+    background-color: #f9fafb;
+    border: 1px solid #f3f4f6;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.offers-theme .service-card .ideal-pill span {
+    font-weight: 700;
+    color: hsl(var(--heading));
+}
+
+.offers-theme .service-card .terms-header {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #9ca3af;
+    margin-bottom: 0.5rem;
+}
+
+.offers-theme .service-card .term-link {
+    font-size: 0.75rem;
+    color: #6b7280;
+    margin-bottom: 0.25rem;
+}
+
+/* Benefits Card Styles */
+.offers-theme .benefit-card {
+    background: white;
+    border: 1px solid #eee;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    position: relative;
+    transition: all 0.3s;
+}
+
+.offers-theme .benefit-card:hover {
+    border-color: hsla(var(--cta), 0.3);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+}
+
+.offers-theme .benefit-number {
+    color: hsl(var(--benefit-number));
+    font-size: 3rem;
+    font-weight: 700;
+    position: absolute;
+    top: 0.5rem;
+    right: 1rem;
+    line-height: 1;
+    pointer-events: none;
+}
+
+.offers-theme .benefit-title {
+    font-weight: 700;
+    font-size: 0.875rem;
+    color: hsl(var(--heading));
+    margin-bottom: 0.25rem;
+    position: relative;
+    z-index: 10;
+}
+
+.offers-theme .benefit-desc {
+    font-size: 0.75rem;
+    color: hsl(var(--text-subtle));
+    line-height: 1.5;
+    position: relative;
+    z-index: 10;
+}
+
+/* Decorative vertical line for headings */
+.offers-theme .section-heading-wrapper {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.offers-theme .section-heading-wrapper::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(to bottom, hsl(var(--cta)), transparent);
+    border-radius: 2px;
+}
+
+.offers-theme .section-heading {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: hsl(var(--heading));
+}
+
+@media (min-width: 768px) {
+    .offers-theme .section-heading {
+        font-size: 2rem;
+    }
+}
+
+/* Utilities */
+.offers-theme .text-white {
+    color: white !important;
+}
+
+.offers-theme .opacity-90 {
+    opacity: 0.9 !important;
+}
+
+.offers-theme .max-w-6xl {
+    max-width: 72rem;
+}
+
+.offers-theme .mx-auto {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.offers-theme .px-6 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+}
+
+/* Process Section Styles */
+.offers-theme .process-step-box {
+    background: white;
+    border: 1px solid #eee;
+    padding: 1.5rem 1rem;
+    border-radius: 0.375rem;
+    text-align: center;
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.offers-theme .process-step-number {
+    background: hsl(var(--primary));
+    color: white;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin: 0 auto 1rem;
+}
+
+.offers-theme .process-step-text {
+    font-size: 0.75rem;
+    color: hsl(var(--heading));
+    line-height: 1.4;
+    font-weight: 500;
+}
+
+/* Industry Tag Styles */
+.offers-theme .industry-tag {
+    padding: 0.5rem 1.25rem;
+    background: white;
+    border: 1px solid #eee;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: hsl(var(--heading));
+    transition: all 0.2s;
+}
+
+.offers-theme .industry-tag:hover {
+    border-color: hsl(var(--cta));
+    color: hsl(var(--cta));
+}
+
+/* Refined Pricing Note */
+.offers-theme .pricing-note-wrapper {
+    background: white;
+    border-left: 4px solid hsl(var(--cta));
+    padding: 1.5rem;
+    margin-top: 3rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.offers-theme .pricing-note-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: hsl(var(--heading));
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+}
+
+/* Centered Dark Contact Section */
+.offers-theme .contact-section-dark {
+    background-color: hsl(var(--primary));
+    color: white;
+    padding: 5rem 1.5rem;
+    text-align: center;
+}
+
+.offers-theme .contact-section-dark h2 {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+.offers-theme .contact-email {
+    color: white;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    font-size: 0.875rem;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+.offers-theme .contact-email:hover {
+    opacity: 1;
+}
