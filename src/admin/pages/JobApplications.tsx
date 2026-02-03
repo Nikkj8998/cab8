@@ -290,32 +290,40 @@ export const JobApplications = () => {
               <X className="h-5 w-5" />
             </Button>
             
-            <div className="flex items-center gap-1 bg-gray-100 p-1 rounded-lg">
+            <div className="flex items-center bg-gray-50 p-1 rounded-xl border border-gray-200 shadow-sm">
               <Button
-                variant={activeTab === 'dashboard' ? 'secondary' : 'ghost'}
+                variant="ghost"
                 size="sm"
                 onClick={() => setActiveTab('dashboard')}
-                className={`h-8 px-3 text-xs font-medium transition-all ${activeTab === 'dashboard' ? 'bg-white shadow-sm' : ''}`}
+                className={`h-9 px-4 text-sm font-semibold transition-all rounded-lg ${
+                  activeTab === 'dashboard' 
+                    ? 'bg-white text-blue-600 shadow-md ring-1 ring-black/5' 
+                    : 'text-gray-500 hover:text-gray-900 hover:bg-gray-100'
+                }`}
               >
-                <LayoutDashboard className="h-3.5 w-3.5 mr-1.5" />
+                <LayoutDashboard className="h-4 w-4 mr-2" />
                 Dashboard
               </Button>
               <Button
-                variant={activeTab === 'list' ? 'secondary' : 'ghost'}
+                variant="ghost"
                 size="sm"
                 onClick={() => setActiveTab('list')}
-                className={`h-8 px-3 text-xs font-medium transition-all ${activeTab === 'list' ? 'bg-white shadow-sm' : ''}`}
+                className={`h-9 px-4 text-sm font-semibold transition-all rounded-lg ${
+                  activeTab === 'list' 
+                    ? 'bg-white text-blue-600 shadow-md ring-1 ring-black/5' 
+                    : 'text-gray-500 hover:text-gray-900 hover:bg-gray-100'
+                }`}
               >
-                <FileText className="h-3.5 w-3.5 mr-1.5" />
+                <FileText className="h-4 w-4 mr-2" />
                 Applications
               </Button>
             </div>
 
-            <div className="h-6 w-px bg-gray-200 mx-1 hidden sm:block" />
+            <div className="h-8 w-px bg-gray-200 mx-2 hidden sm:block" />
             
             <div>
-              <h1 className="text-2xl font-bold">Job Applications</h1>
-              <p className="text-xs text-gray-500 hidden sm:block">Manage and review all job applications</p>
+              <h1 className="text-2xl font-extrabold tracking-tight text-gray-900">Job Applications</h1>
+              <p className="text-xs font-medium text-gray-400 hidden sm:block">Professional Recruitment Overview</p>
             </div>
           </div>
           <div className="flex gap-2 w-full sm:w-auto">
