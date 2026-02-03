@@ -490,13 +490,115 @@ export const JobApplications = () => {
                   </Table>
                 </div>
 
-                {/* Pagination Controls */}
-                {totalPages > 1 && (
-                  <div className="mt-4 flex items-center justify-between px-2">
-                    <div className="text-sm text-gray-500">
-                      Showing <span className="font-medium">{(currentPage - 1) * itemsPerPage + 1}</span> to <span className="font-medium">{Math.min(currentPage * itemsPerPage, filteredApplications.length)}</span> of <span className="font-medium">{filteredApplications.length}</span> results
+                {/* Mobile View Cards */}
+                <div className="md:hidden divide-y divide-gray-100">
+                  {paginatedApplications.map((application) => (
+                    <div 
+                      key={application.id} 
+                      className={`p-4 space-y-3 transition-colors ${selectedApplications.includes(application.id) ? 'bg-blue-50/30' : ''}`}
+                    >
+                      <div className="flex justify-between items-start">
+                        <div className="flex items-start gap-3">
+                          <div 
+                            className="flex items-center justify-center cursor-pointer h-8 w-8 hover:bg-gray-100 rounded"
+                            onClick={() => toggleSelectApplication(application.id)}
+                          >
+                            <div className={`h-4 w-4 rounded border flex items-center justify-center transition-colors ${
+                              selectedApplications.includes(application.id)
+                                ? 'bg-blue-600 border-blue-600'
+                                : 'bg-white border-gray-300'
+                            }`}>
+                              {selectedApplications.includes(application.id) && (
+                                <svg className="h-3 w-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                                </svg>
+                              )}
+                            </div>
+                          </div>
+                          <div className="flex flex-col">
+                            <span className="font-medium text-gray-900">{application.full_name || 'N/A'}</span>
+                            <span className="text-xs text-gray-500">{application.job_title}</span>
+                          </div>
+                        </div>
+                        <Badge variant="outline" className="capitalize text-[10px] px-1.5 py-0 h-5">
+                          {application.status}
+                        </Badge>
+                      </div>
+                      
+                      <div className="grid grid-cols-2 gap-2 text-xs text-gray-500">
+                        <div className="flex items-center gap-1">
+                          <Calendar className="h-3 w-3" />
+                          {formatDate(application.created_at)}
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Briefcase className="h-3 w-3" />
+                          {application.department}
+                        </div>
+                      </div>
+
+                      <div className="flex items-center justify-between pt-2">
+                        <Select
+                          value={application.status}
+                          onValueChange={(value) => handleStatusChange(application.id, value)}
+                        >
+                          <SelectTrigger className="h-7 w-[110px] text-[10px]">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="pending">Pending</SelectItem>
+                            <SelectItem value="reviewed">Reviewed</SelectItem>
+                            <SelectItem value="shortlisted">Shortlisted</SelectItem>
+                            <SelectItem value="contacted">Contacted</SelectItem>
+                            <SelectItem value="rejected">Rejected</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        
+                        <div className="flex items-center gap-1">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-7 w-7 text-gray-600"
+                            onClick={() => handleCallApplicant(application.phone, application.full_name)}
+                          >
+                            <Phone className="h-3.5 w-3.5" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-7 w-7 text-gray-600"
+                            onClick={() => handleEmailApplicant(application.email, application.full_name, application.job_title)}
+                          >
+                            <Mail className="h-3.5 w-3.5" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-7 w-7 text-gray-600"
+                            onClick={() => handleViewApplication(application)}
+                          >
+                            <Eye className="h-3.5 w-3.5" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-7 w-7 text-red-600"
+                            onClick={() => setDeleteId(application.id)}
+                          >
+                            <Trash2 className="h-3.5 w-3.5" />
+                          </Button>
+                        </div>
+                      </div>
                     </div>
-                    <div className="flex gap-2">
+                  ))}
+                </div>
+
+                {/* Pagination Controls - Added to bottom for all views */}
+                {totalPages > 1 && (
+                  <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4 px-4 py-4 border-t border-gray-100 bg-gray-50/30 rounded-b-lg">
+                    <div className="text-sm text-gray-500 order-2 sm:order-1">
+                      Showing <span className="font-semibold text-gray-900">{(currentPage - 1) * itemsPerPage + 1}</span> to <span className="font-semibold text-gray-900">{Math.min(currentPage * itemsPerPage, filteredApplications.length)}</span> of <span className="font-semibold text-gray-900">{filteredApplications.length}</span> applications
+                    </div>
+                    <div className="flex items-center gap-1 order-1 sm:order-2">
                       <Button
                         variant="outline"
                         size="sm"
@@ -506,6 +608,7 @@ export const JobApplications = () => {
                       >
                         <ChevronLeft className="h-4 w-4" />
                       </Button>
+                      
                       <div className="flex items-center gap-1">
                         {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
                           <Button
@@ -513,12 +616,17 @@ export const JobApplications = () => {
                             variant={currentPage === page ? "default" : "outline"}
                             size="sm"
                             onClick={() => setCurrentPage(page)}
-                            className={`h-8 w-8 p-0 ${currentPage === page ? 'bg-primary text-white' : 'text-gray-600'}`}
+                            className={`h-8 min-w-[32px] p-0 transition-all ${
+                              currentPage === page 
+                                ? 'bg-primary text-white hover:bg-primary/90 shadow-sm' 
+                                : 'text-gray-600 hover:text-primary hover:border-primary'
+                            }`}
                           >
                             {page}
                           </Button>
                         ))}
                       </div>
+
                       <Button
                         variant="outline"
                         size="sm"
@@ -531,332 +639,179 @@ export const JobApplications = () => {
                     </div>
                   </div>
                 )}
-
-                {/* Mobile View Cards */}
-                <div className="md:hidden divide-y divide-gray-100">
-                  {paginatedApplications.map((application) => (
-                    <div 
-                      key={application.id} 
-                      className={`p-4 space-y-3 transition-colors ${selectedApplications.includes(application.id) ? 'bg-blue-50/30' : ''}`}
-                    >
-                      <div className="flex justify-between items-start">
-                        <div className="flex items-start gap-3">
-                          <div 
-                            className="flex items-center justify-center cursor-pointer h-8 w-8 hover:bg-gray-100 rounded mt-0.5"
-                            onClick={() => toggleSelectApplication(application.id)}
-                          >
-                            <div className={`h-4 w-4 rounded border flex items-center justify-center transition-colors ${
-                              selectedApplications.includes(application.id)
-                                ? 'bg-blue-600 border-blue-600'
-                                : 'bg-white border-gray-300'
-                            }`}>
-                              {selectedApplications.includes(application.id) && (
-                                <svg className="h-2.5 w-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={4} d="M5 13l4 4L19 7" />
-                                </svg>
-                              )}
-                            </div>
-                          </div>
-                          <div>
-                            <h3 className="font-bold text-gray-900">{application.full_name}</h3>
-                            <p className="text-xs text-gray-500">#{application.id} • {formatDate(application.created_at)}</p>
-                          </div>
-                        </div>
-                        <Select
-                          value={application.status}
-                          onValueChange={(value) => handleStatusChange(application.id, value)}
-                        >
-                          <SelectTrigger className="h-7 w-[110px] text-[10px] font-bold uppercase tracking-wider">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="pending">Pending</SelectItem>
-                            <SelectItem value="reviewed">Reviewed</SelectItem>
-                            <SelectItem value="shortlisted">Shortlisted</SelectItem>
-                            <SelectItem value="contacted">Contacted</SelectItem>
-                            <SelectItem value="rejected">Rejected</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-
-                      <div className="grid grid-cols-1 gap-2 text-sm ml-11">
-                        <div className="flex items-center gap-2 text-gray-700 font-medium">
-                          <Briefcase className="h-3.5 w-3.5 text-blue-600" />
-                          <span>{application.job_title}</span>
-                        </div>
-                        <div className="flex items-center gap-2 text-gray-600">
-                          <Mail className="h-3.5 w-3.5 text-gray-400" />
-                          <span className="truncate">{application.email}</span>
-                        </div>
-                        <div className="flex items-center gap-2 text-gray-600">
-                          <Phone className="h-3.5 w-3.5 text-gray-400" />
-                          <span>{application.phone}</span>
-                        </div>
-                      </div>
-
-                      <div className="flex justify-end items-center gap-1 pt-2 border-t border-gray-50">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="h-8 px-2 text-blue-600 hover:bg-blue-50"
-                          onClick={() => handleViewApplication(application)}
-                        >
-                          <Eye className="h-4 w-4 mr-1.5" />
-                          View
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="h-8 px-2 text-blue-600 hover:bg-blue-50"
-                          onClick={() => handleDownloadResume(application.id, application.full_name)}
-                        >
-                          <Download className="h-4 w-4 mr-1.5" />
-                          Resume
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="h-8 px-2 text-red-600 hover:bg-red-50"
-                          onClick={() => setDeleteId(application.id)}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                
-                {totalPages > 1 && (
-                  <div className="flex flex-col sm:flex-row items-center justify-between mt-6 gap-4 border-t pt-4">
-                    <p className="text-sm text-gray-500">
-                      Showing {(currentPage - 1) * itemsPerPage + 1} to {Math.min(currentPage * itemsPerPage, filteredApplications.length)} of {filteredApplications.length}
-                    </p>
-                    <div className="flex gap-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
-                        disabled={currentPage === 1}
-                        className="h-9"
-                      >
-                        <ChevronLeft className="h-4 w-4 mr-1" /> Previous
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
-                        disabled={currentPage === totalPages}
-                        className="h-9"
-                      >
-                        Next <ChevronRight className="h-4 w-4 ml-1" />
-                      </Button>
-                    </div>
-                  </div>
-                )}
               </>
             )}
           </CardContent>
         </Card>
 
-        {/* View Application Dialog */}
-        <Dialog open={viewDialogOpen} onOpenChange={setViewDialogOpen}>
-          <DialogContent className="max-w-3xl max-h-[95vh] overflow-y-auto w-[95vw] sm:w-full p-0 sm:p-6 overflow-x-hidden">
-            <div className="p-4 sm:p-0">
-              <DialogHeader>
-                <DialogTitle className="text-2xl font-bold">Application Details</DialogTitle>
-                <DialogDescription>
-                  Complete information about the applicant
-                </DialogDescription>
-              </DialogHeader>
-              
-              {selectedApplication && (
-                <div className="space-y-6 mt-6 pb-6">
-                  {/* Applicant Info */}
-                  <div className="bg-gray-50/50 rounded-lg p-4 border border-gray-200">
-                    <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
-                      <CheckCircle2 className="h-5 w-5 text-blue-600" />
-                      Personal Information
-                    </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
-                      <div>
-                        <p className="text-xs uppercase tracking-wider text-gray-500 font-bold mb-1">Full Name</p>
-                        <p className="font-medium text-gray-900">{selectedApplication.full_name}</p>
-                      </div>
-                      <div>
-                        <p className="text-xs uppercase tracking-wider text-gray-500 font-bold mb-1">Email</p>
-                        <p className="font-medium text-gray-900 truncate">{selectedApplication.email}</p>
-                      </div>
-                      <div>
-                        <p className="text-xs uppercase tracking-wider text-gray-500 font-bold mb-1">Phone</p>
-                        <p className="font-medium text-gray-900">{selectedApplication.phone}</p>
-                      </div>
-                      {selectedApplication.linkedin_url && (
-                        <div>
-                          <p className="text-xs uppercase tracking-wider text-gray-500 font-bold mb-1">LinkedIn</p>
-                          <a href={selectedApplication.linkedin_url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline truncate block font-medium">
-                            View Profile
-                          </a>
-                        </div>
-                      )}
-                      {selectedApplication.portfolio_url && (
-                        <div>
-                          <p className="text-xs uppercase tracking-wider text-gray-500 font-bold mb-1">Portfolio</p>
-                          <a href={selectedApplication.portfolio_url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline truncate block font-medium">
-                            View Portfolio
-                          </a>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Job Details */}
-                  <div className="bg-blue-50/50 rounded-lg p-4 border border-blue-100">
-                    <h3 className="font-semibold text-lg mb-4 flex items-center gap-2 text-blue-900">
-                      <Briefcase className="h-5 w-5 text-blue-600" />
-                      Job Information
-                    </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
-                      <div>
-                        <p className="text-xs uppercase tracking-wider text-blue-600/70 font-bold mb-1">Position Applied For</p>
-                        <p className="font-semibold text-blue-900">{selectedApplication.job_title}</p>
-                      </div>
-                      <div>
-                        <p className="text-xs uppercase tracking-wider text-blue-600/70 font-bold mb-1">Department</p>
-                        <p className="font-medium text-blue-900">{selectedApplication.department}</p>
-                      </div>
-                      <div>
-                        <p className="text-xs uppercase tracking-wider text-blue-600/70 font-bold mb-1">Location preference</p>
-                        <p className="font-medium text-blue-900">{selectedApplication.location}</p>
-                      </div>
-                      <div>
-                        <p className="text-xs uppercase tracking-wider text-blue-600/70 font-bold mb-1">Job Type</p>
-                        <p className="font-medium text-blue-900">{selectedApplication.type}</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Professional Info */}
-                  <div className="bg-green-50/50 rounded-lg p-4 border border-green-100">
-                    <h3 className="font-semibold text-lg mb-4 flex items-center gap-2 text-green-900">
-                      <Calendar className="h-5 w-5 text-green-600" />
-                      Professional Details
-                    </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 text-sm">
-                      <div>
-                        <p className="text-xs uppercase tracking-wider text-green-600/70 font-bold mb-1">Experience</p>
-                        <p className="font-medium text-green-900">{selectedApplication.years_of_experience}</p>
-                      </div>
-                      <div>
-                        <p className="text-xs uppercase tracking-wider text-green-600/70 font-bold mb-1">Notice Period</p>
-                        <p className="font-medium text-green-900">{selectedApplication.notice_period}</p>
-                      </div>
-                      {selectedApplication.current_company && (
-                        <div>
-                          <p className="text-xs uppercase tracking-wider text-green-600/70 font-bold mb-1">Current Company</p>
-                          <p className="font-medium text-green-900">{selectedApplication.current_company}</p>
-                        </div>
-                      )}
-                      {selectedApplication.current_role && (
-                        <div>
-                          <p className="text-xs uppercase tracking-wider text-green-600/70 font-bold mb-1">Current Role</p>
-                          <p className="font-medium text-green-900">{selectedApplication.current_role}</p>
-                        </div>
-                      )}
-                      {selectedApplication.expected_salary && (
-                        <div>
-                          <p className="text-xs uppercase tracking-wider text-green-600/70 font-bold mb-1">Expected Salary</p>
-                          <p className="font-medium text-green-900">{selectedApplication.expected_salary}</p>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Cover Letter */}
-                  {selectedApplication.cover_letter && (
-                    <div className="space-y-2">
-                      <h3 className="font-semibold text-lg flex items-center gap-2">
-                        <FileText className="h-5 w-5 text-gray-600" />
-                        Cover Letter
-                      </h3>
-                      <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                        <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">{selectedApplication.cover_letter}</p>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Actions Sticky Footer for Dialog */}
-                  <div className="flex flex-col sm:flex-row gap-3 pt-6 border-t mt-6 sticky bottom-0 bg-white sm:bg-transparent -mx-4 -mb-4 p-4 sm:p-0">
-                    <Button
-                      onClick={() => handleCallApplicant(selectedApplication.phone, selectedApplication.full_name)}
-                      className="flex-1 w-full"
-                    >
-                      <Phone className="h-4 w-4 mr-2" />
-                      Call Applicant
-                    </Button>
-                    <Button
-                      variant="outline"
-                      onClick={() => handleEmailApplicant(selectedApplication.email, selectedApplication.full_name, selectedApplication.job_title)}
-                      className="flex-1 w-full"
-                    >
-                      <Mail className="h-4 w-4 mr-2" />
-                      Send Email
-                    </Button>
-                    <Button
-                      variant="outline"
-                      onClick={() => handleDownloadResume(selectedApplication.id, selectedApplication.full_name)}
-                      className="flex-1 w-full"
-                    >
-                      <Download className="h-4 w-4 mr-2" />
-                      Resume
-                    </Button>
-                  </div>
-                </div>
-              )}
-            </div>
-          </DialogContent>
-        </Dialog>
-
-        {/* Delete Confirmation Dialog */}
-        <AlertDialog open={deleteId !== null} onOpenChange={() => setDeleteId(null)}>
-          <AlertDialogContent className="w-[95vw] sm:w-full rounded-lg">
+        {/* Bulk Delete Alert Dialog */}
+        <AlertDialog open={bulkDeleteDialogOpen} onOpenChange={setBulkDeleteDialogOpen}>
+          <AlertDialogContent>
             <AlertDialogHeader>
               <AlertDialogTitle>Are you sure?</AlertDialogTitle>
               <AlertDialogDescription>
-                This will permanently delete this job application and the associated resume file. This action cannot be undone.
+                This will permanently delete {selectedApplications.length} selected job applications. This action cannot be undone.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction 
-                onClick={() => deleteId && handleDelete(deleteId)}
-                className="bg-red-600 hover:bg-red-700"
-              >
+              <AlertDialogAction onClick={handleBulkDelete} className="bg-red-600 hover:bg-red-700">
+                Delete All
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+
+        {/* Delete Single Application Alert Dialog */}
+        <AlertDialog open={!!deleteId} onOpenChange={(open) => !open && setDeleteId(null)}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+              <AlertDialogDescription>
+                This action cannot be undone. This will permanently delete the job application.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={() => deleteId && handleDelete(deleteId)} className="bg-red-600 hover:bg-red-700">
                 Delete
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
 
-        {/* Bulk Delete Confirmation Dialog */}
-        <AlertDialog open={bulkDeleteDialogOpen} onOpenChange={setBulkDeleteDialogOpen}>
-          <AlertDialogContent className="w-[95vw] sm:w-full rounded-lg">
-            <AlertDialogHeader>
-              <AlertDialogTitle>Delete Multiple Applications?</AlertDialogTitle>
-              <AlertDialogDescription>
-                Are you sure you want to delete {selectedApplications.length} selected applications? This action cannot be undone.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction 
-                onClick={handleBulkDelete}
-                className="bg-red-600 hover:bg-red-700"
-              >
-                Delete All
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
+        {/* View Application Details Dialog */}
+        <Dialog open={viewDialogOpen} onOpenChange={setViewDialogOpen}>
+          <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle className="text-xl font-bold">Application Details</DialogTitle>
+              <DialogDescription>
+                Reviewing application for {selectedApplication?.job_title}
+              </DialogDescription>
+            </DialogHeader>
+            
+            {selectedApplication && (
+              <div className="space-y-6 py-4">
+                {/* Basic Info */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-4">
+                    <div>
+                      <label className="text-sm font-medium text-gray-500">Applicant Name</label>
+                      <p className="text-base font-semibold">{selectedApplication.full_name}</p>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-gray-500">Email Address</label>
+                      <p className="text-base">{selectedApplication.email}</p>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-gray-500">Phone Number</label>
+                      <p className="text-base">{selectedApplication.phone}</p>
+                    </div>
+                  </div>
+                  <div className="space-y-4">
+                    <div>
+                      <label className="text-sm font-medium text-gray-500">Position Applied</label>
+                      <p className="text-base font-semibold text-primary">{selectedApplication.job_title}</p>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-gray-500">Department</label>
+                      <p className="text-base">{selectedApplication.department}</p>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-gray-500">Experience</label>
+                      <p className="text-base">{selectedApplication.years_of_experience} years</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Additional Info */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-4 rounded-lg border border-gray-100">
+                  <div className="space-y-4">
+                    <div>
+                      <label className="text-sm font-medium text-gray-500">Current Company</label>
+                      <p className="text-base">{selectedApplication.current_company || 'N/A'}</p>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-gray-500">Current Role</label>
+                      <p className="text-base">{selectedApplication.current_role || 'N/A'}</p>
+                    </div>
+                  </div>
+                  <div className="space-y-4">
+                    <div>
+                      <label className="text-sm font-medium text-gray-500">Notice Period</label>
+                      <p className="text-base">{selectedApplication.notice_period}</p>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-gray-500">Expected Salary</label>
+                      <p className="text-base">{selectedApplication.expected_salary || 'Not specified'}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Links */}
+                <div className="flex flex-wrap gap-4">
+                  {selectedApplication.linkedin_url && (
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => window.open(selectedApplication.linkedin_url, '_blank')}
+                    >
+                      <svg className="h-4 w-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                      </svg>
+                      LinkedIn Profile
+                    </Button>
+                  )}
+                  {selectedApplication.portfolio_url && (
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => window.open(selectedApplication.portfolio_url, '_blank')}
+                    >
+                      <MapPin className="h-4 w-4 mr-2" />
+                      Portfolio
+                    </Button>
+                  )}
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    className="text-blue-600 hover:text-blue-700 hover:bg-blue-50 border-blue-200"
+                    onClick={() => handleDownloadResume(selectedApplication.id, selectedApplication.full_name)}
+                  >
+                    <Download className="h-4 w-4 mr-2" />
+                    Download Resume
+                  </Button>
+                </div>
+
+                {/* Cover Letter */}
+                {selectedApplication.cover_letter && (
+                  <div>
+                    <label className="text-sm font-medium text-gray-500 mb-2 block">Cover Letter</label>
+                    <div className="bg-gray-50 p-4 rounded-lg border border-gray-100 text-sm whitespace-pre-wrap leading-relaxed">
+                      {selectedApplication.cover_letter}
+                    </div>
+                  </div>
+                )}
+
+                {/* Footer Actions */}
+                <div className="flex justify-end gap-2 pt-4 border-t">
+                  <Button
+                    variant="outline"
+                    onClick={() => setViewDialogOpen(false)}
+                  >
+                    Close
+                  </Button>
+                  <Button
+                    onClick={() => handleEmailApplicant(selectedApplication.email, selectedApplication.full_name, selectedApplication.job_title)}
+                  >
+                    <Mail className="h-4 w-4 mr-2" />
+                    Email Applicant
+                  </Button>
+                </div>
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
