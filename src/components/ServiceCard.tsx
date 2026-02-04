@@ -28,11 +28,11 @@ const ServiceCard = ({
     <div className="group relative bg-gradient-to-br from-gray-900/90 to-gray-800/90 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-6 hover:border-primary/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/10 flex flex-col h-full">
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
       <div className="relative z-10 flex flex-col h-full">
-        <h3 className="text-2xl font-bold text-white mb-2">{title}</h3>
+        <h3 className="text-2xl text-white mb-2">{title}</h3>
         {idealFor && (
           <p className="text-sm text-gray-400 mb-4">{idealFor}</p>
         )}
-        
+
         <div className="mb-6">
           <div className="text-xl font-bold text-white mb-1">{price}</div>
           {priceNote && (
@@ -70,8 +70,8 @@ const ServiceCard = ({
           </p>
         )}
 
-        <Button 
-          onClick={() => navigate('/contact')} 
+        <Button
+          onClick={() => navigate('/contact')}
           className="w-full bg-transparent border border-white/20 hover:bg-primary/20 hover:border-primary text-white mt-auto"
         >
           {cta}

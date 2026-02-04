@@ -770,6 +770,15 @@ const Header = () => {
                         </div>
                       </Link>
                       <Link
+                        to="/life-at-cybaemtech"
+                        className="block select-none rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-gray-100 hover:text-[#14539a]"
+                        onClick={() => setAboutUsOpen(false)}
+                      >
+                        <div className="text-sm font-medium leading-none">
+                          Life At CybaemTech
+                        </div>
+                      </Link>
+                      <Link
                         to="/careers"
                         className="block select-none rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-gray-100 hover:text-[#14539a]"
                         onClick={() => setAboutUsOpen(false)}
@@ -778,6 +787,17 @@ const Header = () => {
                           Job Opportunities
                         </div>
                       </Link>
+                      <a
+                        href="https://www.skilltonitedu.com/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block select-none rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-gray-100 hover:text-[#14539a]"
+                        onClick={() => setAboutUsOpen(false)}
+                      >
+                        <div className="text-sm font-medium leading-none">
+                          Learn with Cybaem
+                        </div>
+                      </a>
                     </div>
                   </div>
                 )}
