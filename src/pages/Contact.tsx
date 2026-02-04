@@ -1,23 +1,18 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import React from "react";
-import { useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Mail, Phone, MapPin, Clock, Send, Globe, Building, ChevronDown } from "lucide-react";
+import { Mail, Phone, MapPin, Clock, Send, Globe, ChevronDown, Shield, HeadphonesIcon, CheckCircle, Users, Award } from "lucide-react";
 import { SocialIcons } from "@/components/SocialIcons";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ThankYouPage from "@/components/ThankYou";
-import { toast } from "sonner";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { CheckCircle, Shield, Users, Award, HeadphonesIcon } from "lucide-react";
 import AlphabeticCaptcha from "@/components/AlphabeticCaptcha";
 
 const contactFormSchema = z.object({
@@ -36,29 +31,6 @@ const contactFormSchema = z.object({
 });
 
 type ContactFormData = z.infer<typeof contactFormSchema>;
-
-const whyChooseReasons = [
-  {
-    icon: CheckCircle,
-    title: "Free 30-minute strategy session",
-    description: "Get expert consultation at no cost to understand your business needs.",
-  },
-  {
-    icon: Shield,
-    title: "Certified experts & consultants",
-    description: "Work with industry-certified professionals with proven track records.",
-  },
-  {
-    icon: Users,
-    title: "Flexible scheduling worldwide",
-    description: "Book consultations at your convenience across different time zones.",
-  },
-  {
-    icon: Award,
-    title: "Customized solution roadmap",
-    description: "Receive tailored recommendations specific to your business requirements.",
-  },
-];
 
 const faqs = [
   {
@@ -121,8 +93,6 @@ const contactFormRightInfo = [
   },
 ];
 
-
-
 const countries = [
   "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Argentina", "Armenia", "Australia", "Austria", "Azerbaijan",
   "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", "Burundi",
@@ -176,19 +146,13 @@ const Contact = () => {
   });
 
   useEffect(() => {
-    // Capture source page information
     const referrer = document.referrer || "Direct";
     const urlParams = new URLSearchParams(window.location.search);
     const source = urlParams.get("source") || referrer;
     const planFromUrl = urlParams.get("plan") || "";
-
-    // Check for saved plan in sessionStorage
     const savedPlan = sessionStorage.getItem("selectedPlan") || "";
-
-    // Priority: URL parameter > sessionStorage
     const finalPlan = planFromUrl || savedPlan;
 
-    // If plan exists in URL, save it to sessionStorage
     if (planFromUrl) {
       sessionStorage.setItem("selectedPlan", planFromUrl);
     }
@@ -198,7 +162,6 @@ const Contact = () => {
     form.setValue("selectedPlan", finalPlan);
   }, [form]);
 
-  // Filter countries based on search
   useEffect(() => {
     if (countrySearch) {
       const filtered = countries.filter(country =>
@@ -210,7 +173,6 @@ const Contact = () => {
     }
   }, [countrySearch]);
 
-  // Handle click outside to close dropdown
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (countryDropdownRef.current && !countryDropdownRef.current.contains(event.target as Node)) {
@@ -228,8 +190,6 @@ const Contact = () => {
     }
 
     try {
-      console.log("Form submitted:", data);
-
       const response = await fetch("https://www.cybaemtech.com/cybaem_contact/contact_v2.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -248,7 +208,6 @@ const Contact = () => {
       } else {
         alert("Something went wrong. Please try again.");
       }
-
     } catch (error) {
       console.error("Form submission error:", error);
       alert("Something went wrong. Please try again.");
@@ -262,73 +221,15 @@ const Contact = () => {
     setCaptchaValid(false);
   };
 
-  // Show thank you page if form was successfully submitted
   if (showThankYou) {
     return <ThankYouPage onBack={handleBackToForm} />;
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#0a0f1c]">
-
-
       <Header />
 
-      {/* Contact Information Cards Section */}
-      <section className="py-12 md:py-16 bg-gradient-to-b from-black to-gray-900">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-3">
-              <span className="text-white">Get in </span>
-              <span className="text-primary">Touch</span>
-            </h2>
-            <div className="w-20 h-1 bg-primary mx-auto mb-6"></div>
-            <p className="text-gray-300 text-lg max-w-2xl mx-auto">
-              We're here to help transform your business with cutting-edge technology solutions
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-            {contactFormRightInfo.filter(info => info.label !== "Business Hours").map((info, idx) => (
-              <Card
-                key={idx}
-                className="bg-gray-900/50 border-gray-800 hover:border-primary/50 transition-all duration-300 hover:transform hover:scale-105 hover:shadow-xl hover:shadow-primary/20 group"
-              >
-                <CardContent className="p-6 text-center">
-                  <div className="mb-4 flex justify-center">
-                    <div className="p-3 rounded-full bg-primary/20 group-hover:bg-primary/30 transition-colors">
-                      <info.icon className="w-6 h-6 text-primary" />
-                    </div>
-                  </div>
-                  <h3 className="text-white font-semibold mb-3 text-base">{info.label}</h3>
-                  {info.label === "Call Us for Business" ? (
-                    <div className="flex flex-col gap-1">
-                      <a href="tel:+919028541383" className="text-gray-400 hover:text-primary transition-colors text-sm block">
-                        +91-9028541383
-                      </a>
-                      <a href="tel:0202069010200" className="text-gray-400 hover:text-primary transition-colors text-sm block">
-                        020 2069010200
-                      </a>
-                    </div>
-                  ) : info.link ? (
-                    <a href={info.link} className="text-gray-400 hover:text-primary transition-colors text-sm block">
-                      {info.value}
-                    </a>
-                  ) : (
-                    <p className="text-gray-400 text-sm">{info.value}</p>
-                  )}
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-
-          {/* Social Media Links */}
-          <div className="mt-12 text-center">
-            <h3 className="text-white font-semibold mb-4 text-lg">Connect With Us</h3>
-            <SocialIcons variant="contact" className="justify-center" iconSize={24} />
-          </div>
-        </div>
-      </section>
-
-      {/* Contact Form Section */}
+      {/* Quick Contact Form Section (Immediately after Header) */}
       <section id="contact-form" className="py-16 md:py-20 bg-black">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
@@ -342,13 +243,10 @@ const Contact = () => {
             </p>
           </div>
           <div className="max-w-3xl mx-auto">
-            {/* Contact Form - Full Width Horizontal Layout */}
             <div className="relative rounded-3xl bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 p-5 md:p-6 lg:p-8 overflow-hidden shadow-2xl border border-gray-700/50">
               <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wMiI+PHBhdGggZD0iTTM2IDM0djItMnptMCAydjJoMnYtMmgtMnptLTIgMGgtMnYyaDJ2LTJ6bTAtMnYyaDJ2LTJoLTJ6bTItMmgydi0yaC0ydjJ6bTAtMnYtMmgtMnYyaDJ6bTIgMGgydjJoLTJ2LTJ6bTAgMnYyaDJ2LTJoLTJ6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-40"></div>
-
               <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
               <div className="absolute bottom-0 left-0 w-64 h-64 bg-primary/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
-
               <div className="relative z-10">
                 <div className="mb-4 md:mb-5">
                   <div className="flex items-center gap-3 mb-2">
@@ -500,13 +398,9 @@ const Contact = () => {
                             </FormLabel>
                             <FormControl>
                               <AlphabeticCaptcha
-                                onChange={(isValid) => {
+                                onVerify={(isValid) => {
                                   field.onChange(isValid);
                                   setCaptchaValid(isValid);
-                                }}
-                                onReset={() => {
-                                  field.onChange(false);
-                                  setCaptchaValid(false);
                                 }}
                               />
                             </FormControl>
@@ -517,23 +411,69 @@ const Contact = () => {
                       <Button
                         type="submit"
                         className="w-full bg-gradient-to-r from-primary to-blue-500 hover:from-primary/90 hover:to-blue-500/90 text-white font-bold py-3 text-base rounded-xl transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl shadow-primary/20"
+                        disabled={form.formState.isSubmitting}
                       >
-                        Get My Free Consultation
-                        <Send className="w-5 h-5 ml-2" />
+                        {form.formState.isSubmitting ? "Sending..." : "Get My Free Consultation"}
+                        {!form.formState.isSubmitting && <Send className="w-5 h-5 ml-2" />}
                       </Button>
-                      <div className="flex flex-wrap justify-center gap-6 md:gap-8 pt-3 border-t border-gray-700/50">
-                        <div className="flex items-center gap-2">
-                          <span className="text-gray-300 text-sm font-medium">💬 We'll respond Quickly.</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <span className="text-gray-300 text-sm font-medium">🔒 Your information is 100% secure.</span>
-                        </div>
-                      </div>
                     </form>
                   </Form>
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Get in Touch Section (Below Quick Contact Form) */}
+      <section className="py-12 md:py-16 bg-gradient-to-b from-black to-gray-900">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-3">
+              <span className="text-white">Get in </span>
+              <span className="text-primary">Touch</span>
+            </h2>
+            <div className="w-20 h-1 bg-primary mx-auto mb-6"></div>
+            <p className="text-gray-300 text-lg max-w-2xl mx-auto">
+              We're here to help transform your business with cutting-edge technology solutions
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+            {contactFormRightInfo.filter(info => info.label !== "Business Hours").map((info, idx) => (
+              <Card
+                key={idx}
+                className="bg-gray-900/50 border-gray-800 hover:border-primary/50 transition-all duration-300 hover:transform hover:scale-105 hover:shadow-xl hover:shadow-primary/20 group"
+              >
+                <CardContent className="p-6 text-center">
+                  <div className="mb-4 flex justify-center">
+                    <div className="p-3 rounded-full bg-primary/20 group-hover:bg-primary/30 transition-colors">
+                      <info.icon className="w-6 h-6 text-primary" />
+                    </div>
+                  </div>
+                  <h3 className="text-white font-semibold mb-3 text-base">{info.label}</h3>
+                  {info.label === "Call Us for Business" ? (
+                    <div className="flex flex-col gap-1">
+                      <a href="tel:+919028541383" className="text-gray-400 hover:text-primary transition-colors text-sm block">
+                        +91-9028541383
+                      </a>
+                      <a href="tel:0202069010200" className="text-gray-400 hover:text-primary transition-colors text-sm block">
+                        020 2069010200
+                      </a>
+                    </div>
+                  ) : info.link ? (
+                    <a href={info.link} className="text-gray-400 hover:text-primary transition-colors text-sm block">
+                      {info.value}
+                    </a>
+                  ) : (
+                    <p className="text-gray-400 text-sm">{info.value}</p>
+                  )}
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+          <div className="mt-12 text-center">
+            <h3 className="text-white font-semibold mb-4 text-lg">Connect With Us</h3>
+            <SocialIcons variant="contact" className="justify-center" iconSize={24} />
           </div>
         </div>
       </section>
@@ -705,40 +645,12 @@ const Contact = () => {
                       <reason.icon className="w-8 h-8 text-primary" />
                     </div>
                   </div>
-                  <h3 className="text-lg md:text-xl font-semibold text-white mb-3">{reason.title}</h3>
-                  <p className="text-gray-400 text-sm md:text-base leading-relaxed">{reason.description}</p>
+                  <h3 className="text-xl font-bold text-white mb-4">{reason.title}</h3>
+                  <p className="text-gray-400 leading-relaxed">{reason.description}</p>
                 </CardContent>
               </Card>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* Ready When You Are CTA - Updated with brand colors */}
-      <section className="py-16 md:py-20 bg-gray-900">
-        <div className="container mx-auto mobile-padding">
-          <Card className="bg-gray-800/50 border-gray-700 hover:border-primary/30 transition-all duration-300">
-            <CardContent className="p-8 md:p-12 text-center">
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 md:mb-6">
-                Ready when you are
-              </h2>
-              <p className="text-lg md:text-xl text-gray-300 mb-8 md:mb-10 max-w-2xl mx-auto">
-                Start your journey with us today and experience why over 100+ companies trust us with their digital transformation.
-              </p>
-              <Button
-                size="lg"
-                onClick={() => {
-                  document.querySelector("form")?.scrollIntoView({
-                    behavior: "smooth",
-                    block: "start",
-                  });
-                }}
-                className="bg-primary hover:bg-primary/90 text-white font-semibold px-8 py-4 text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-primary/30"
-              >
-                Start Your Project
-              </Button>
-            </CardContent>
-          </Card>
         </div>
       </section>
 
