@@ -398,7 +398,7 @@ const Contact = () => {
                             </FormLabel>
                             <FormControl>
                               <AlphabeticCaptcha
-                                onVerify={(isValid) => {
+                                onChange={(isValid) => {
                                   field.onChange(isValid);
                                   setCaptchaValid(isValid);
                                 }}
