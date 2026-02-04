@@ -34,7 +34,7 @@ const ServiceCard = ({
         )}
         
         <div className="mb-6">
-          <div className="text-xl font-bold text-[#14539a] mb-1">{price}</div>
+          <div className="text-xl font-bold text-white mb-1">{price}</div>
           {priceNote && (
             <p className="text-gray-500 text-xs uppercase tracking-wide">{priceNote}</p>
           )}
