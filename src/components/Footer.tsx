@@ -11,7 +11,7 @@ const Footer = () => (
         <div className="sm:col-span-2 lg:col-span-1">
           <div className="flex items-center space-x-2 mb-4">
             <img
-              src="uploads/01_CYBAEM TECH Logo 2026 PNG 1.png"
+              src="/uploads/01_CYBAEM TECH Logo 2026 PNG 1.png"
               alt="CybaemTech Logo"
               className="h-12 md:h-14 w-auto object-contain"
             />

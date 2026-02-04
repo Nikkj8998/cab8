@@ -398,7 +398,7 @@ const Header = () => {
   return (
     <div className="sticky top-0 z-50 w-full">
       {/* Republic 2026 Banner */}
-     
+
 
       {/* Main Header */}
       <header className="w-full bg-white border-b border-gray-200 text-black shadow-sm">
@@ -410,7 +410,7 @@ const Header = () => {
             className="flex items-center space-x-2 touch-target"
           >
             <img
-              src="uploads/01_CYBAEM TECH Logo 2026 PNG 1.png"
+              src="/uploads/01_CYBAEM TECH Logo 2026 PNG 1.png"
               alt="CybaemTech Logo"
               className="h-10 md:h-12 w-auto object-contain"
             />
@@ -481,11 +481,10 @@ const Header = () => {
                             onMouseEnter={() =>
                               setActiveServiceCategory(category.id)
                             }
-                            className={`flex items-center justify-between px-3 py-2 rounded-md cursor-pointer transition-colors no-underline ${
-                              activeServiceCategory === category.id
-                                ? "bg-[#14539a] text-white"
-                                : "text-gray-700 hover:bg-gray-100"
-                            }`}
+                            className={`flex items-center justify-between px-3 py-2 rounded-md cursor-pointer transition-colors no-underline ${activeServiceCategory === category.id
+                              ? "bg-[#14539a] text-white"
+                              : "text-gray-700 hover:bg-gray-100"
+                              }`}
                           >
                             <div className="flex items-center gap-2.5">
                               <category.icon
@@ -524,9 +523,9 @@ const Header = () => {
                                   const serviceHash =
                                     typeof service === "string"
                                       ? service
-                                          .toLowerCase()
-                                          .replace(/[^a-z0-9]+/g, "-")
-                                          .replace(/(^-|-$)/g, "")
+                                        .toLowerCase()
+                                        .replace(/[^a-z0-9]+/g, "-")
+                                        .replace(/(^-|-$)/g, "")
                                       : (service as any).hash;
                                   return (
                                     <Link
@@ -556,9 +555,9 @@ const Header = () => {
                                   const serviceHash =
                                     typeof service === "string"
                                       ? service
-                                          .toLowerCase()
-                                          .replace(/[^a-z0-9]+/g, "-")
-                                          .replace(/(^-|-$)/g, "")
+                                        .toLowerCase()
+                                        .replace(/[^a-z0-9]+/g, "-")
+                                        .replace(/(^-|-$)/g, "")
                                       : (service as any).hash;
                                   return (
                                     <Link
@@ -588,9 +587,9 @@ const Header = () => {
                                   const serviceHash =
                                     typeof service === "string"
                                       ? service
-                                          .toLowerCase()
-                                          .replace(/[^a-z0-9]+/g, "-")
-                                          .replace(/(^-|-$)/g, "")
+                                        .toLowerCase()
+                                        .replace(/[^a-z0-9]+/g, "-")
+                                        .replace(/(^-|-$)/g, "")
                                       : (service as any).hash;
                                   return (
                                     <Link
@@ -623,9 +622,9 @@ const Header = () => {
                                   const serviceHash =
                                     typeof service === "string"
                                       ? service
-                                          .toLowerCase()
-                                          .replace(/[^a-z0-9]+/g, "-")
-                                          .replace(/(^-|-$)/g, "")
+                                        .toLowerCase()
+                                        .replace(/[^a-z0-9]+/g, "-")
+                                        .replace(/(^-|-$)/g, "")
                                       : (service as any).hash;
                                   return (
                                     <Link
@@ -655,9 +654,9 @@ const Header = () => {
                                   const serviceHash =
                                     typeof service === "string"
                                       ? service
-                                          .toLowerCase()
-                                          .replace(/[^a-z0-9]+/g, "-")
-                                          .replace(/(^-|-$)/g, "")
+                                        .toLowerCase()
+                                        .replace(/[^a-z0-9]+/g, "-")
+                                        .replace(/(^-|-$)/g, "")
                                       : (service as any).hash;
                                   return (
                                     <Link
@@ -800,11 +799,11 @@ const Header = () => {
 
           {/* Desktop Navigation Items and CTA */}
           <div className="hidden lg:flex items-center space-x-4 xl:space-x-6">
-       <Button
-  variant="outline"
-  size="sm"
-  asChild
-  className="
+            <Button
+              variant="outline"
+              size="sm"
+              asChild
+              className="
     border border-green-700
     text-green-700
     bg-green-100
@@ -820,16 +819,16 @@ const Header = () => {
     items-center
     gap-2
   "
->
-  <a
-    href="/offers"
-    onClick={handleMenuItemClick}
-    className="flex items-center gap-2"
-  >
-    <BadgePercent className="w-4 h-4" />
-    Get Offer
-  </a>
-</Button>
+            >
+              <a
+                href="/offers"
+                onClick={handleMenuItemClick}
+                className="flex items-center gap-2"
+              >
+                <BadgePercent className="w-4 h-4" />
+                Get Offer
+              </a>
+            </Button>
 
 
             <Button
