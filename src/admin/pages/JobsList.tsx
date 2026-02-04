@@ -24,7 +24,11 @@ import {
   Activity,
   DollarSign,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  LayoutDashboard,
+  Users,
+  TrendingUp,
+  BriefcaseBusiness
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
@@ -62,6 +66,130 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
+const JobsDashboard = ({ jobs }: { jobs: Job[] }) => {
+  const activeJobs = jobs.filter(j => j.status === 'active').length;
+  const totalJobs = jobs.length;
+  const locations = new Set(jobs.map(j => j.location)).size;
+  
+  return (
+    <div className="space-y-6 animate-in fade-in duration-500">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <Card className="p-4 border-none shadow-sm ring-1 ring-gray-200 bg-white">
+          <div className="flex items-center gap-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <Briefcase className="h-6 w-6 text-blue-600" />
+            </div>
+            <div>
+              <p className="text-sm font-medium text-gray-500">Total Postings</p>
+              <h3 className="text-2xl font-bold">{totalJobs}</h3>
+            </div>
+          </div>
+        </Card>
+        <Card className="p-4 border-none shadow-sm ring-1 ring-gray-200 bg-white">
+          <div className="flex items-center gap-4">
+            <div className="p-3 bg-emerald-50 rounded-lg">
+              <Activity className="h-6 w-6 text-emerald-600" />
+            </div>
+            <div>
+              <p className="text-sm font-medium text-gray-500">Active Jobs</p>
+              <h3 className="text-2xl font-bold">{activeJobs}</h3>
+            </div>
+          </div>
+        </Card>
+        <Card className="p-4 border-none shadow-sm ring-1 ring-gray-200 bg-white">
+          <div className="flex items-center gap-4">
+            <div className="p-3 bg-purple-50 rounded-lg">
+              <MapPin className="h-6 w-6 text-purple-600" />
+            </div>
+            <div>
+              <p className="text-sm font-medium text-gray-500">Locations</p>
+              <h3 className="text-2xl font-bold">{locations}</h3>
+            </div>
+          </div>
+        </Card>
+        <Card className="p-4 border-none shadow-sm ring-1 ring-gray-200 bg-white">
+          <div className="flex items-center gap-4">
+            <div className="p-3 bg-orange-50 rounded-lg">
+              <TrendingUp className="h-6 w-6 text-orange-600" />
+            </div>
+            <div>
+              <p className="text-sm font-medium text-gray-500">Growth</p>
+              <h3 className="text-2xl font-bold">+12%</h3>
+            </div>
+          </div>
+        </Card>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <Card className="border-none shadow-sm ring-1 ring-gray-200 overflow-hidden">
+          <div className="p-6 border-b border-gray-100 bg-gray-50/50">
+            <h3 className="font-bold text-lg flex items-center gap-2">
+              <BriefcaseBusiness className="h-5 w-5 text-blue-600" />
+              Executive Overview
+            </h3>
+          </div>
+          <div className="p-6 space-y-4">
+            {jobs.slice(0, 3).map(job => (
+              <div key={job.id} className="flex items-center justify-between p-4 rounded-xl border border-gray-100 hover:border-blue-200 hover:bg-blue-50/30 transition-all">
+                <div className="flex items-center gap-4">
+                  <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-bold">
+                    {job.title[0]}
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-gray-900">{job.title}</h4>
+                    <p className="text-sm text-gray-500">{job.location}</p>
+                  </div>
+                </div>
+                <Badge className="bg-blue-100 text-blue-700 border-none px-3 py-1">View Details</Badge>
+              </div>
+            ))}
+          </div>
+        </Card>
+
+        <Card className="border-none shadow-sm ring-1 ring-gray-200 overflow-hidden">
+          <div className="p-6 border-b border-gray-100 bg-gray-50/50">
+            <h3 className="font-bold text-lg flex items-center gap-2">
+              <Users className="h-5 w-5 text-emerald-600" />
+              Professional Talent Pool
+            </h3>
+          </div>
+          <div className="p-6">
+            <div className="space-y-6">
+              <div className="flex justify-between items-end">
+                <div className="space-y-1">
+                  <p className="text-sm text-gray-500 font-medium">Recent Activity</p>
+                  <h4 className="text-3xl font-bold text-gray-900">142</h4>
+                  <p className="text-xs text-emerald-600 font-bold flex items-center gap-1">
+                    <TrendingUp className="h-3 w-3" /> +24% from last month
+                  </p>
+                </div>
+                <div className="flex gap-1 h-20 items-end">
+                  {[40, 60, 45, 70, 55, 80, 65].map((h, i) => (
+                    <div key={i} style={{ height: `${h}%` }} className="w-2 bg-emerald-200 rounded-t-sm" />
+                  ))}
+                </div>
+              </div>
+              <div className="pt-4 border-t border-gray-100">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="p-3 rounded-lg bg-gray-50">
+                    <p className="text-xs text-gray-500">Avg. Time to Hire</p>
+                    <p className="font-bold text-gray-900 text-lg">12 Days</p>
+                  </div>
+                  <div className="p-3 rounded-lg bg-gray-50">
+                    <p className="text-xs text-gray-500">Applications</p>
+                    <p className="font-bold text-gray-900 text-lg">850+</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Card>
+      </div>
+    </div>
+  );
+};
 
 interface Job {
   id: number;
@@ -268,7 +396,20 @@ export const JobsList = () => {
           </div>
         </div>
 
-        <Card className="border-none shadow-sm ring-1 ring-gray-200">
+        <Tabs defaultValue="list" className="w-full">
+          <TabsList className="bg-gray-100/50 p-1 mb-4">
+            <TabsTrigger value="list" className="gap-2">
+              <ListChecks className="h-4 w-4" />
+              Job List
+            </TabsTrigger>
+            <TabsTrigger value="dashboard" className="gap-2">
+              <LayoutDashboard className="h-4 w-4" />
+              Dashboard
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="list" className="m-0 border-none p-0">
+            <Card className="border-none shadow-sm ring-1 ring-gray-200">
           <CardHeader className="pb-4">
             <div className="flex flex-wrap gap-4 items-center">
               <div className="flex-1 min-w-[200px]">
@@ -558,6 +699,12 @@ export const JobsList = () => {
             </div>
           </CardContent>
         </Card>
+          </TabsContent>
+
+          <TabsContent value="dashboard" className="m-0 border-none p-0">
+            <JobsDashboard jobs={jobs} />
+          </TabsContent>
+        </Tabs>
       </div>
 
       <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
