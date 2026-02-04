@@ -699,15 +699,15 @@ export const JobsList = () => {
             </div>
           </CardContent>
         </Card>
-          </TabsContent>
+      </TabsContent>
 
-          <TabsContent value="dashboard" className="m-0 border-none p-0">
-            <JobsDashboard jobs={jobs} />
-          </TabsContent>
-        </Tabs>
-      </div>
+      <TabsContent value="dashboard" className="m-0 border-none p-0">
+        <JobsDashboard jobs={jobs} />
+      </TabsContent>
+    </Tabs>
+  </div>
 
-      <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
+  <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto w-[95vw] sm:w-full p-0 sm:p-6 overflow-x-hidden">
           <div className="p-4 sm:p-0">
             <DialogHeader>
