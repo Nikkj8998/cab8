@@ -448,7 +448,7 @@ export const JobApplications = () => {
                           <div className="flex justify-between mt-1 px-0.5">
                             <span className="text-[10px] text-gray-400 font-medium">{Math.round(percentage)}% of total</span>
                             <span className="text-[10px] text-gray-500 font-semibold group-hover:text-blue-600 transition-colors">
-                              {count > 5 ? 'High Demand' : 'Steady'}
+                              {count > 2 ? 'High Demand' : 'Steady'}
                             </span>
                           </div>
                         </div>
