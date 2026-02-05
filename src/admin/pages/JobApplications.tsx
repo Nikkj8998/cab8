@@ -414,6 +414,58 @@ export const JobApplications = () => {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Applications by Job */}
+              <Card className="border-none shadow-sm ring-1 ring-gray-200 bg-white">
+                <CardHeader className="pb-2 flex flex-row items-center justify-between">
+                  <h3 className="font-bold text-lg">Applications by Job</h3>
+                  <Badge variant="outline" className="text-[10px] font-semibold border-blue-200 text-blue-700 bg-blue-50/50">
+                    Active Listings
+                  </Badge>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-5 py-2">
+                    {Array.from(new Set(applications.map(a => a.job_title))).slice(0, 5).map((jobTitle) => {
+                      const count = applications.filter(a => a.job_title === jobTitle).length;
+                      const percentage = applications.length > 0 ? (count / applications.length) * 100 : 0;
+                      return (
+                        <div key={jobTitle} className="group">
+                          <div className="flex justify-between items-end mb-1.5">
+                            <div className="flex items-center gap-2">
+                              <div className="h-1.5 w-1.5 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.5)]" />
+                              <span className="text-sm font-semibold text-gray-800 line-clamp-1">{jobTitle}</span>
+                            </div>
+                            <div className="flex items-baseline gap-1">
+                              <span className="text-lg font-bold text-gray-900 leading-none">{count}</span>
+                              <span className="text-[10px] font-medium text-gray-400 uppercase tracking-wider">Apps</span>
+                            </div>
+                          </div>
+                          <div className="relative h-2 w-full bg-gray-50 rounded-full overflow-hidden border border-gray-100/50">
+                            <div 
+                              className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full transition-all duration-700 ease-out shadow-[0_0_12px_rgba(79,70,229,0.3)]"
+                              style={{ width: `${percentage}%` }}
+                            />
+                          </div>
+                          <div className="flex justify-between mt-1 px-0.5">
+                            <span className="text-[10px] text-gray-400 font-medium">{Math.round(percentage)}% of total</span>
+                            <span className="text-[10px] text-gray-500 font-semibold group-hover:text-blue-600 transition-colors">
+                              {count > 5 ? 'High Demand' : 'Steady'}
+                            </span>
+                          </div>
+                        </div>
+                      );
+                    })}
+                    {applications.length === 0 && (
+                      <div className="py-10 text-center">
+                        <div className="inline-flex items-center justify-center h-12 w-12 rounded-full bg-gray-50 mb-3">
+                          <Briefcase className="h-6 w-6 text-gray-300" />
+                        </div>
+                        <p className="text-sm text-gray-400 italic">No job distribution data available</p>
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+
               {/* Applications by Status */}
               <Card className="border-none shadow-sm ring-1 ring-gray-200 bg-white">
                 <CardHeader className="pb-2">
