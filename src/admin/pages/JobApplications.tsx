@@ -577,7 +577,7 @@ export const JobApplications = () => {
           </div>
         ) : (
           <Card className="border-none shadow-sm ring-1 ring-gray-200">
-            <CardHeader className="pb-4">
+            <CardHeader className="pb-4 space-y-4">
               <div className="flex flex-wrap gap-4 items-center">
                 <div className="flex-1 min-w-[200px]">
                   <div className="relative">
@@ -606,6 +606,38 @@ export const JobApplications = () => {
                     </SelectContent>
                   </Select>
                 </div>
+              </div>
+
+              {/* Status Filter Tabs */}
+              <div className="flex flex-wrap gap-2 pt-2">
+                {[
+                  { id: 'all', label: 'All', color: 'bg-gray-100 text-gray-700 hover:bg-gray-200 border-gray-200' },
+                  { id: 'pending', label: 'Pending', color: 'bg-amber-50 text-amber-700 hover:bg-amber-100 border-amber-200' },
+                  { id: 'reviewed', label: 'Reviewed', color: 'bg-blue-50 text-blue-700 hover:bg-blue-100 border-blue-200' },
+                  { id: 'shortlisted', label: 'Shortlisted', color: 'bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border-indigo-200' },
+                  { id: 'contacted', label: 'Contacted', color: 'bg-purple-50 text-purple-700 hover:bg-purple-100 border-purple-200' },
+                  { id: 'rejected', label: 'Rejected', color: 'bg-red-50 text-red-700 hover:bg-red-100 border-red-200' },
+                ].map((tab) => (
+                  <button
+                    key={tab.id}
+                    onClick={() => { setStatusFilter(tab.id); setCurrentPage(1); }}
+                    className={`px-4 py-1.5 rounded-full text-xs font-semibold border transition-all duration-200 ${
+                      statusFilter === tab.id 
+                        ? `${tab.color.split(' ')[0].replace('bg-', 'bg-opacity-100 bg-')} ring-2 ring-offset-1 ring-primary/20 scale-105 shadow-sm` 
+                        : `${tab.color} opacity-70 hover:opacity-100`
+                    } ${
+                      statusFilter === tab.id ? tab.color.replace('text-', 'text-').replace('border-', 'border-').split(' ')[1] + ' ' + tab.color.split(' ')[2] : ''
+                    }`}
+                  >
+                    <div className="flex items-center gap-1.5">
+                      {statusFilter === tab.id && <div className="h-1.5 w-1.5 rounded-full bg-current animate-pulse" />}
+                      {tab.label}
+                      <span className="ml-1 opacity-60 text-[10px]">
+                        ({tab.id === 'all' ? applications.length : applications.filter(a => a.status === tab.id).length})
+                      </span>
+                    </div>
+                  </button>
+                ))}
               </div>
             </CardHeader>
             <CardContent className="p-0 sm:p-6">
